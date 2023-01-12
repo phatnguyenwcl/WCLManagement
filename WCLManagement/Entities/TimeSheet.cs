@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WCLManagement.Interfaces;
 
 namespace WCLManagement.Entities
 {
     [Table("TimeSheets")]
-    public class TimeSheet
+    public class TimeSheet : IDateTracking
     {
         [Key]
         public int ID { get; set; }

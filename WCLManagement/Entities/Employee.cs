@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WCLManagement.Enums;
+using WCLManagement.Interfaces;
 
 namespace WCLManagement.Entities
 {
     [Table("Employees")]
-    public class Employee
+    public class Employee : IDateTracking
     {
         [Key]
         public int ID { get; set; }

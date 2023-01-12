@@ -17,6 +17,11 @@ namespace WCLManagement.Infrastructure
             _context.SaveChanges();
         }
 
+        public Task<int> CommitAsync()
+        {
+            return _context.SaveChangesAsync();
+        }
+
         public void Dispose()
         {
             _context.Dispose();

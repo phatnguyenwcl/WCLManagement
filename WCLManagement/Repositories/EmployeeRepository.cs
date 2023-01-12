@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WCLManagement.EF;
 using WCLManagement.Entities;
+using WCLManagement.Infrastructure.Interfaces;
 using WCLManagement.Repositories.Interfaces;
 using WCLManagement.ViewModels;
 
@@ -9,53 +10,24 @@ namespace WCLManagement.Repositories
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        private readonly WCLManagementDbContext _context;
+        private IRepository<Employee, int> _employeeRepository;
+        private IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-
-        public EmployeeRepository(WCLManagementDbContext context, IMapper mapper)
+    
+        public EmployeeRepository(IRepository<Employee, int> employeeRepository, IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _employeeRepository = employeeRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
         
-        public async Task<IEnumerable<EmployeeVM>> GetEmployeesAsync()
+        public async Task CreateEmployeeAsync(EmployeeVM employeeVm)
         {
-            var lstEmployees = await _context.Employees.ToListAsync();
-
-            var result = _mapper.Map<List<Employee>, List<EmployeeVM>>(lstEmployees);
-
-            return result;
-        }
-
-        public async Task<EmployeeVM> GetEmployeeAsync(int id)
-        {
-            if (id == 0) return new EmployeeVM();
-
-            var employee = await _context.Employees.FindAsync(id);
-
-            if (employee == null)
+            if (employeeVm == null)
             {
-                return new EmployeeVM();
+                throw new ArgumentNullException(nameof(employeeVm));
             }
-
-            var result = _mapper.Map<Employee, EmployeeVM>(employee);
-
-            return result;
-        }
-
-        public Task CreateEmployeeAsync(EmployeeVM employee)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateEmployeeAsync(EmployeeVM employee)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteEmployeeAsync(int id)
-        {
-            throw new NotImplementedException();
+            var employeeObj = _mapper.Map<EmployeeVM, Employee>(employeeVm);
         }
     }
 }

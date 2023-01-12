@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WCLManagement.Interfaces;
 
 namespace WCLManagement.Entities
 {
     [Table("Departments")]
-    public class Department
+    public class Department : IDateTracking
     {
         [Key]
         public int ID { get; set; }
@@ -17,6 +18,7 @@ namespace WCLManagement.Entities
         public virtual ICollection<Employee> Employees { set; get; }
 
         public DateTime DateCreated { get; set; }
+
         public DateTime DateModified { get; set; }
     }
 }
